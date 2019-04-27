@@ -1,8 +1,12 @@
 #include "yshell.h"
 #define MAX_CMD_LEN 256
 
+char *username, hostname[HOST_NAME_MAX], directory[PATH_MAX];
+
+
 void print_prompt(void) {
-   printf("%s $ ", hostname);
+   char *curdir = strrchr(directory, '/') + 1;
+   printf("%s@%s:%s$ ", username, hostname, curdir);
 }
 
 void read_command(char **command) {
