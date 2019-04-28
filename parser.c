@@ -1,7 +1,7 @@
 #include "yshell.h"
 
 int do_nothing;
-extern int should_run;
+extern int run_shell;
 
 char* find_delimiter(char **delimiter, char *command);
 
@@ -10,7 +10,7 @@ void parse_command(char **command) {
     do_nothing = 0;
     pre_parse(*command);
 
-    if(!should_run || do_nothing) return;
+    if(!run_shell || do_nothing) return;
 
     char *args[100], *delimiter = malloc(3*sizeof(char));
     /* 1. Find a delimiter and its position.
@@ -52,7 +52,7 @@ void pre_parse(char *command) {
         do_nothing = 1;
     }
     else if(!strcmp(command, "exit\n"))
-        should_run = 0;
+        run_shell = 0;
 }
 
 /* Find delimiter and return the position right after it */

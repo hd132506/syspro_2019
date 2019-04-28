@@ -1,11 +1,11 @@
 #include "yshell.h"
 
 /* Flags for control main logic */
-int should_run = 1;
+int run_shell = 1;
 
 int main(void) {
     init();
-    while(should_run) {
+    while(run_shell) {
         char *cmd;
         print_prompt();
         read_command(&cmd);
