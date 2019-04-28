@@ -4,6 +4,7 @@
 
 char *username, hostname[HOST_NAME_MAX], directory[PATH_MAX];
 int n_commands;
+extern char init_dir[PATH_MAX];
 
 void print_prompt(void) {
    char *curdir = strrchr(directory, '/') + 1;
@@ -19,7 +20,9 @@ void read_command(char **command) {
     }
 
     /* Record command into yhistory with the time it's been entered */
-    int history_fd = open(".yhistory", O_WRONLY | O_APPEND);
+    char file_path[PATH_MAX];
+    sprintf(file_path, "%s/%s", init_dir, ".yhistory");
+    int history_fd = open(file_path, O_WRONLY | O_APPEND);
     time_t now; time(&now);
     char *str_now = ctime(&now), *buffer;
     int time_len = strlen(str_now), cmd_len = strlen(*command);

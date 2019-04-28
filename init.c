@@ -3,6 +3,7 @@
 #include <signal.h>
 
 
+char init_dir[PATH_MAX]; /* the path where this shell exists  */
 extern char *username, hostname[HOST_NAME_MAX], directory[PATH_MAX];
 extern int n_commands;
 
@@ -26,6 +27,7 @@ void init(void) {
     user_pw = getpwuid(getuid());
     username = strdup(user_pw->pw_name);
     getcwd(directory, sizeof(directory));
+    getcwd(init_dir, sizeof(init_dir));
 
     /* create history file*/
     refresh_history();

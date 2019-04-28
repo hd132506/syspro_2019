@@ -3,8 +3,7 @@
 #include <errno.h>
 
 extern int do_something;
-extern char directory[PATH_MAX];
-
+extern char directory[PATH_MAX], init_dir[PATH_MAX];
 extern void refresh_history();
 
 pid_t exec_command(char *args[100]) {
@@ -15,13 +14,15 @@ pid_t exec_command(char *args[100]) {
         return getpid();
     }
     else if(!strcmp(args[0], "history")) { 
-        char buffer[100] = {};
-        int ret, history_fd = open(".yhistory", O_RDONLY);
+        char buffer[101] = {};
+        char file_path[PATH_MAX];
+        sprintf(file_path, "%s/%s", init_dir, ".yhistory");
+        int ret, history_fd = open(file_path, O_RDONLY);
         if(args[1] == NULL) {
             while((ret = read(history_fd, buffer, 100)) != 0) {
                 if(ret == -1) {
                     if(errno == EINTR) continue; /* Retry when trivial error */
-                    perror("History read error\n");
+                    perror("History read error");
                     break;
                 }
                 printf("%s", buffer); memset(buffer, 0, sizeof(buffer));
