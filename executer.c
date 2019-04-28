@@ -1,27 +1,17 @@
 #include "yshell.h"
+#include <pwd.h>
 
 extern int do_something;
+extern char directory[PATH_MAX];
 
-void exec_program(char *[100]);
-
-void exec_command(char *args[100], char *delimiter) {
-    int i, start = 0;
-    if(delimiter[0] == '\0') do_something = 0;
-
-    for(i = 0; args[i]!=NULL; ++i) {
-        /* Check and process delimiters */
-        if(!strcmp(args[i], ";")) {
-            args[i] = NULL;
-            start = i+1;
-            exec_program(args + start);
-            wait(NULL);
-        }
+pid_t exec_command(char *args[100]) {
+    if(!strcmp(args[0], "cd")) {
+        if(chdir(args[1]) == -1)
+            printf("yshell: invalid directory\n");
+        getcwd(directory, sizeof(directory));
+        return getpid();
     }
-    exec_program(args + start);
-    wait(NULL);
-}
 
-void exec_program(char *args[100]) {
     pid_t pid = fork();
     if(pid == 0)
         if(execvp(args[0], args)==-1) {
@@ -30,6 +20,7 @@ void exec_program(char *args[100]) {
         }
     else
         printf("yshell: Fork error\n");
+    return pid;
 }
 
 
