@@ -7,6 +7,9 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#ifndef HOST_NAME_MAX
+#define HOST_NAME_MAX 256
+#endif
 
 void init(void);
 void print_prompt(void);
