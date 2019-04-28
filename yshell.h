@@ -5,7 +5,8 @@
 #include <limits.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-
+#include <fcntl.h>
+#include <sys/stat.h>
 
 void init(void);
 void print_prompt(void);

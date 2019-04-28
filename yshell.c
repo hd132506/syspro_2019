@@ -12,7 +12,6 @@ int main(void) {
         parse_command(&cmd);
         free(cmd);
     }
-
     printf("yshell closed.\n");
     return 0;
 }
